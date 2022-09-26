@@ -1,0 +1,56 @@
+import rodados.*
+import direcciones.*
+import wollok.game.*
+import colores.*
+import paredess.*
+import tiles.*
+
+program corsasEnElGame {
+	game.title("Metiendo un Corsa en el game")
+	game.width(15)
+	game.height(12)
+	
+	const cachito = new Corsa(color=rojo)
+	const pepito = new Corsa(color=verde,position=game.at(2,2))
+	const roman = new Corsa(color=azul,position=game.at(4,6))
+	var autoActivo = cachito
+	
+	const pared1 = new Pared()
+	const pared2 = new Pared()
+	const pared3 = new Pared()
+	const pared4 = new Pared()
+	
+	
+	
+	keyboard.up().onPressDo ({autoActivo.moverseHacia(norte)})	
+	keyboard.down().onPressDo ({autoActivo.moverseHacia(sur)})	
+	keyboard.left().onPressDo ({autoActivo.moverseHacia(oeste)})	
+	keyboard.right().onPressDo ({autoActivo.moverseHacia(este)})
+	keyboard.r().onPressDo({autoActivo.image(rojo.image())})
+	keyboard.a().onPressDo({autoActivo.image(azul.image())})
+	keyboard.v().onPressDo({autoActivo.image(verde.image())})	
+	
+	keyboard.num1().onPressDo({autoActivo = cachito})
+	keyboard.num2().onPressDo({autoActivo = pepito})
+	keyboard.num3().onPressDo({autoActivo = roman})
+	keyboard.q().onPressDo({game.removeVisual(roman)})
+	
+	game.addVisual(cachito)
+	game.addVisual(pepito)
+	game.addVisual(roman)
+	game.addVisual(pared1)
+	game.addVisual(pared2)
+	game.addVisual(pared3)
+	game.addVisual(pared4)
+	
+		//prueba
+	var tile = new Tile()
+	game.addVisual(tile)
+	 // cada medio segundo cambio imagen
+    game.onTick(500, "movimiento", { tile.cambiarImagenes() })
+	
+	game.onCollideDo(autoActivo,{cosa => autoActivo.chocarContra(cosa)})
+	
+	
+	game.start()
+}
